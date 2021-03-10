@@ -1,7 +1,10 @@
 #Name of the file you'd like to read
-file_name = "EXERPT ZOOM0020_INPUT1 2019-9-2 Chatting with the Jula balafon"
+file_name = "ZOOM0020_INPUT1 2019-9-2 Chatting with the Jula balafon IMPROVED2"
+# file_name = 'info'
 #Name of the instrument in the video
 instrument = "EmileBalafon2"
+
+#"My Balafon, EmileBalafon1, EmileBalafon2, StearnsLargeBalafon, SiamouBalafonDieri, DianBalafon, JulaBalafon, BwabaBalafon"
 
 #What would you like the outputted Elan TextGrid file to be named? (outputted in textgrid_data file)
 ELAN_name = 'example_rel'
@@ -9,7 +12,7 @@ ELAN_name = 'example_rel'
 #Set to True to get one of the following: 
 
 #0. Does all of the below
-do_all = False
+do_all = True
 
 #1. An Elan file of individual notes 
 individual_notes = False
@@ -24,7 +27,7 @@ freq_phrases = False
 relative_notes = False
 
 #5. An Elan file of relative notes in a phrase (eg.'5 4 5 5 5')** 
-relative_phrases = True
+relative_phrases = False
 
 #---------------------------------------------------------#
 import freq_to_notes as ftn
@@ -33,8 +36,7 @@ import relative_notes as rn
 import phrase_parser as pp 
 import relative_phrases as rp
 import do_all as dl 
-import os.path
-# using text file from Praat, gets file name, makes a dict with time:freq lines as a list, then removes header, creates empty dictionary
+#using text file from Praat, gets file name, makes a dict with time:freq lines as a list, then removes header, creates empty dictionary
 
 #do_all, individual_notes, note_phrases, freq_phrases, relative_notes, relative_phrases
 
@@ -87,34 +89,40 @@ def chunk_data(dictionary):
       freq_list.append(curr_freq)
 
   #removes empty strings
-  chunk_list = [x for x in chunk_list if x != []]
+  new_list = [x for x in chunk_list if x != []]
+
+ 
 
   #goes through the chunk list to see if there are any areas of notes that haave a large jump between them. This will mean that there is a flam or octave being played, and so should count as two notes within the chunk 
-  for chunk in chunk_list:  
-    variance = 10 
-    found_notes = []
-    
-    
-    #an undefined chunk describes a period of silence, and so should not be observed for flams 
-    if '--undefined--' not in chunk: 
-      prev_freq = float(chunk[0])
-   
-      for freq in chunk:
-        note_freq = float(freq)
-        note_range = range(round(prev_freq) - variance, round(prev_freq) + variance)
-    
-        if round(note_freq) not in note_range: 
-          found_notes.append(freq)
-          chunk.remove(freq)
-          if found_notes != []:
-            chunk_list.append(found_notes)
-            print(found_notes)
 
-        
-        prev_freq = float(freq) 
- 
-      
+  chunk_list = []
+
+  for chunk in new_list:  
+    variance = 9 
+    found_notes = []
+
+    if '--undefined--' in chunk: 
+      chunk_list.append(chunk)
+    #an undefined chunk describes a period of silence, and so should not be observed for flams 
+
+    elif '--undefined--' not in chunk: 
+      # prev_freq = float(chunk[0])
+      #goes through the frequencies in the list chunk
+      partial_chunk = []
+      for i in range(len(chunk)-1):
+        note_freq = float(chunk[i])
+        next_freq = float(chunk[i+1])
+        note_range = range(round(note_freq) - variance, round(note_freq) + variance)
+
+        partial_chunk.append(chunk[i])
     
+        if round(next_freq) not in note_range: 
+          chunk_list.append(partial_chunk)
+          partial_chunk = []
+
+      partial_chunk.append(chunk[-1])
+      chunk_list.append(partial_chunk)
+        
 
 #creates list stamp_list of time stamps for beginnings of each new beat 
   start_stamp = 0 
@@ -127,7 +135,6 @@ def chunk_data(dictionary):
   chunk_list = list(zip(chunk_list, stamp_list))
 
   return chunk_list
-
       
 def freq_parser(chunk_list): 
   #Goes through each list(beat) in chunk_list and describes their average freq and length. A 'beat' can either mean a note or a rest. 
@@ -162,16 +169,8 @@ def freq_parser(chunk_list):
 
       freq_and_lengths['beat ' + str(count)] = str(avg_freq) + 'hz for ' + beat_len + 'ms' + ' at ' + sound_start + 's'
 
-      file_info.append([float(sound_start), int(beat_len), avg_freq]) #######
+      file_info.append([float(sound_start), int(beat_len), avg_freq])
     
-# prints and returns
-  # for x in freq_and_lengths.items(): 
-  #   print(x)
-
-  # for x in file_info:
-  #   print(x)
-
-  # print(file_name)
   return file_info
 
 
