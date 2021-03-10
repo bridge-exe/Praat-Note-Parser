@@ -4,7 +4,7 @@ Object class = "TextGrid"
 0
 50.26
 <exists>
-9
+11
 "IntervalTier"
 "Individual Notes"
 0
@@ -1023,7 +1023,7 @@ Object class = "TextGrid"
 50.26
 ""
 "IntervalTier"
-"Translation"
+"Karim Translation"
 0
 50.26
 2
@@ -1045,7 +1045,29 @@ Object class = "TextGrid"
 50.26
 ""
 "IntervalTier"
+"Anthony Translation"
+0
+50.26
+2
+0
+1
+""
+1
+50.26
+""
+"IntervalTier"
 "Emile"
+0
+50.26
+2
+0
+1
+""
+1
+50.26
+""
+"IntervalTier"
+"Emile Translation"
 0
 50.26
 2

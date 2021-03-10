@@ -14,7 +14,6 @@
 
 #finds the phrases of notes, parses the high note of each phrase, uses that to compare, and output('42444')
 def relative_phrases(file_info): 
-  
   info = []
   count = 0 
   phrase_start = 0 
@@ -53,12 +52,9 @@ def relative_phrases(file_info):
             new_note = str(int(new_note) + 5) + 'a'
 
           phrase_list.append(new_note)
-          # print(new_note)
 
         else: 
           phrase_list.append(note[2])
-
-        
 
       new_list = [phrase_start, phrase_length] + [phrase_list]
       info.append(new_list)
@@ -67,7 +63,7 @@ def relative_phrases(file_info):
   info_outer = []
   info_outer.append(info)
 
-  # for x in info: 
+  # for x in info:
   #   print(x)
 
   return info

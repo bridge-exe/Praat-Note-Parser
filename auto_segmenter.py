@@ -1,6 +1,7 @@
-# import os
+import os
+import os.path
 from praatio import tgio
-# from os.path import join
+from os.path import join
 
 #praat textgrid creator that auto annotates freq/notes and duration
 
@@ -11,6 +12,8 @@ from praatio import tgio
 #create a for loop for the objs in file info, and add those tuples to list, use list to make a textGrid interval tier, use tier to make textgrid file 
 
 def auto_segmenter(file_info, ELAN_name):
+  # for x in file_info:
+  #   print(x)
   beat_info = []
   rest_info = []
   file_length = 0 
@@ -18,10 +21,11 @@ def auto_segmenter(file_info, ELAN_name):
   if len(file_info) == 2: 
     file_info = file_info[0]
 
+
   #each beat in file info should look like [start, length, name]
   for beat in file_info: 
     #creates vals for start, stop, and beat label
-
+    
     beat_start = float(beat[0])
     beat_length = int(beat[1])/1000
     
@@ -44,9 +48,8 @@ def auto_segmenter(file_info, ELAN_name):
     #adds these vals to a list
     beat_info.append([beat_start, beat_end, beat_label])
     
-
-
   #creates tier desired beat info 
+
   beat_tier = tgio.IntervalTier('Balafon', beat_info)
 
   #nothing is left blank  
@@ -70,12 +73,15 @@ def auto_segmenter(file_info, ELAN_name):
   file_textgrid.addTier(emile_tier)
   file_textgrid.addTier(etrans_tier)
 
-  return beat_info
+  
 
-
- 
 #makes textgrid of beats of given file_info
-  file_textgrid.save('textgrid_data/' + ELAN_name + '.TextGrid') 
+
+  file_textgrid.save('textgrid_data/' + ELAN_name + '.TextGrid')  
+
   # file_textgrid.save('C:\Users\Bridg\Praat Proj' + ELAN_name + '.TextGrid')
   
   #figure out saving to computer  
+  return beat_info
+
+  

@@ -6,13 +6,14 @@
 import csv
 
 def freq_to_notes(file_info, relative, undefined_included, instrument = 'JulaBalafon'): 
+ 
   open_file = open("praat_data/balafon_Frequencies.csv")
   notes = csv.reader(open_file, delimiter=',')
   balafon_notes = []
   #creates the note dict that we use to parse the notes in the future
   for x in notes:
     balafon_notes.append(x)
-
+  count = 0 
   notes_and_lengths = {}
   variance = 9
   
@@ -22,6 +23,7 @@ def freq_to_notes(file_info, relative, undefined_included, instrument = 'JulaBal
   #goes through each note, compares it against a column within the instrument column of the csv, spits out the column index +1, which will be the note 
 
   for note in file_info: 
+    count += 1
     note_info = []
      
     length = str(note[1])

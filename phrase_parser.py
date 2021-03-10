@@ -9,30 +9,35 @@ def phrase_parser(file_info):
   note_time_variance = 1000
   
   for info in file_info:
-  
     note = info[2]
     note_length = int(info[1])
     start_time = float(info[0])
-
+    note_a = [start_time, note_length, note]
+    
     #checks if the phrase is a rest
     if 'undefined' in info: 
       #if it is over 1 sec, consider it a phrase break
+      
       if note_length > note_time_variance: 
         phrase_info.append(phrase)
         phrase = []
         phrase_break = [start_time, note_length, 'phrase_break']
         phrase_info.append(phrase_break)
-
+        
       #if it is not a rest, consider it a phrase, have the notes and rests appended to phrase info as lists in a list 
       else: 
-        phrase.append([start_time, note_length, note])
-
+        phrase.append(note_a)      
+       
     #appends undefined notes as info 
     else: 
-      phrase.append([start_time, note_length, note])
+      phrase.append(note_a)
 
+  if 'phrase_break' not in info: 
+    phrase_info.append(phrase)
+   
   #removes empty strings 
   phrase_info = [x for x in phrase_info if x != []] 
+  # print(phrase_info)
 
   #compare notes relative to each other, broken up by phrase breaks 
   phrase_and_length_info = []
@@ -53,13 +58,15 @@ def phrase_parser(file_info):
     
     else: 
       for note in phrase: 
+        
         phrase_length += note[1]
         note_val = str(note[2])
         phrase_notes.append(note_val)
 
       phrase_and_length_info.append([phrase_start, phrase_length, phrase_notes])
-
-
+  
+  
+  return(phrase_and_length_info, phrase_info)
 #--------------------------#
   # for x in phrase_info: 
   #  print(x)
@@ -67,8 +74,8 @@ def phrase_parser(file_info):
 
   # for x in phrase_and_length_info: 
   #   print(x)
-  
-  return (phrase_and_length_info, phrase_info)
+    # print(phrase_and_length_info)
+
 
  
 

@@ -2,6 +2,7 @@ from praatio import tgio
 
 def do_all(ELAN_name, individual_notes, note_phrases, frequencies, relative_notes, relative_phrases): 
   
+  
   #creates tiers of import
   individual_notes_tier = tgio.IntervalTier('Individual Notes', individual_notes)
   note_phrases_tier = tgio.IntervalTier('Note Phrases', note_phrases)
@@ -28,7 +29,7 @@ def do_all(ELAN_name, individual_notes, note_phrases, frequencies, relative_note
   file_textgrid.addTier(relative_notes_tier)
   file_textgrid.addTier(relative_phrases_tier)
   
-  file_textgrid.addTier(beat_tier)
+  # file_textgrid.addTier(beat_tier
   file_textgrid.addTier(karim_tier)
   file_textgrid.addTier(ktrans_tier)
   file_textgrid.addTier(ant_tier)

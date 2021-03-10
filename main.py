@@ -1,10 +1,10 @@
 #Name of the file you'd like to read
-file_name = "info"
+file_name = "EXERPT ZOOM0020_INPUT1 2019-9-2 Chatting with the Jula balafon"
 #Name of the instrument in the video
 instrument = "EmileBalafon2"
 
 #What would you like the outputted Elan TextGrid file to be named? (outputted in textgrid_data file)
-ELAN_name = 'example'
+ELAN_name = 'example_rel'
 
 #Set to True to get one of the following: 
 
@@ -15,16 +15,16 @@ do_all = False
 individual_notes = False
 
 #2. An Elan file of notes outputted as one annotation per phrase 
-note_phrases = True
+note_phrases = False
 
 #3 An Elan file of frequencies outputed as one annotation per phrase 
 freq_phrases = False
 
 #4. An elan file of individual relative notes (eg. '5', '4', '5', '5', '5')**
-relative_notes = False 
+relative_notes = False
 
 #5. An Elan file of relative notes in a phrase (eg.'5 4 5 5 5')** 
-relative_phrases = False
+relative_phrases = True
 
 #---------------------------------------------------------#
 import freq_to_notes as ftn
@@ -33,7 +33,7 @@ import relative_notes as rn
 import phrase_parser as pp 
 import relative_phrases as rp
 import do_all as dl 
-
+import os.path
 # using text file from Praat, gets file name, makes a dict with time:freq lines as a list, then removes header, creates empty dictionary
 
 #do_all, individual_notes, note_phrases, freq_phrases, relative_notes, relative_phrases
@@ -45,6 +45,7 @@ def make_dict(file_name):
 
   text_file_lines = text_file.readlines()
   text_file_lines.remove(text_file_lines[0])
+  text_file_lines.append('0.0000   --undefined--')
 
   #creates dictionary of times and hz
   text_file_dictionary = {}
@@ -68,7 +69,7 @@ def chunk_data(dictionary):
     curr_time = item[0]
     sound_starts.append(curr_time)
     
-    #if val is undefined, adds freq_list to chunk_list, clears freq_list and adds 'undefined' to undef_list 
+#if val is undefined, adds freq_list to chunk_list, clears freq_list and adds 'undefined' to undef_list 
     if 'undefined' in curr_freq: 
       chunk_list.append(freq_list)
       freq_list = []
@@ -87,6 +88,33 @@ def chunk_data(dictionary):
 
   #removes empty strings
   chunk_list = [x for x in chunk_list if x != []]
+
+  #goes through the chunk list to see if there are any areas of notes that haave a large jump between them. This will mean that there is a flam or octave being played, and so should count as two notes within the chunk 
+  for chunk in chunk_list:  
+    variance = 10 
+    found_notes = []
+    
+    
+    #an undefined chunk describes a period of silence, and so should not be observed for flams 
+    if '--undefined--' not in chunk: 
+      prev_freq = float(chunk[0])
+   
+      for freq in chunk:
+        note_freq = float(freq)
+        note_range = range(round(prev_freq) - variance, round(prev_freq) + variance)
+    
+        if round(note_freq) not in note_range: 
+          found_notes.append(freq)
+          chunk.remove(freq)
+          if found_notes != []:
+            chunk_list.append(found_notes)
+            print(found_notes)
+
+        
+        prev_freq = float(freq) 
+ 
+      
+    
 
 #creates list stamp_list of time stamps for beginnings of each new beat 
   start_stamp = 0 
