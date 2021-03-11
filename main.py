@@ -1,21 +1,21 @@
 #Name of the file you'd like to read
 file_name = "ZOOM0020_INPUT1 2019-9-2 Chatting with the Jula balafon IMPROVED2"
-# file_name = 'info'
+
 #Name of the instrument in the video
 instrument = "EmileBalafon2"
 
 #"My Balafon, EmileBalafon1, EmileBalafon2, StearnsLargeBalafon, SiamouBalafonDieri, DianBalafon, JulaBalafon, BwabaBalafon"
 
 #What would you like the outputted Elan TextGrid file to be named? (outputted in textgrid_data file)
-ELAN_name = 'example_rel'
+ELAN_name = 'example'
 
 #Set to True to get one of the following: 
 
 #0. Does all of the below
-do_all = True
+do_all = False
 
 #1. An Elan file of individual notes 
-individual_notes = False
+individual_notes = True
 
 #2. An Elan file of notes outputted as one annotation per phrase 
 note_phrases = False
@@ -41,10 +41,13 @@ import do_all as dl
 #do_all, individual_notes, note_phrases, freq_phrases, relative_notes, relative_phrases
 
 def make_dict(file_name):
-  ######-----SELECT WHETHER YOU WANT TO TYPE THE NAME OR INPUT IT---####
-  text_file = open('praat_data/' + file_name + ".txt")
-  # text_file = open('praat_data/' + input() + ".txt")
+  #creates name of file
+  if '.txt' in file_name: 
+    text_file = open('praat_data/' + file_name)
+  else: 
+    text_file = open('praat_data/' + file_name + ".txt")
 
+  #reads info into text_file_lines
   text_file_lines = text_file.readlines()
   text_file_lines.remove(text_file_lines[0])
   text_file_lines.append('0.0000   --undefined--')

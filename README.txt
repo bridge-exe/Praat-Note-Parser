@@ -1,5 +1,5 @@
 Introduction:
-Utility code used to parse the frequencies, notes, and relative positions of the Toussian Musical Surrogate Language. 
+This is a utility code used to parse the frequencies, notes,and relative musical positions of the Toussian Musical Surrogate Language. It outputs a TextGrid file, which may be exported into ELAN for automatic annotation. 
 
 Instructions: 
 1. Select audio and video files.
