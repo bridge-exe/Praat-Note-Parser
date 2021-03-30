@@ -1,32 +1,32 @@
-#Name of the file you'd like to read
-file_name = "ZOOM0020_INPUT1 2019-9-2 Chatting with the Jula balafon IMPROVED2"
+#Name of the file you'd like to read in praat_data folder
+  #MAKE SURE IT IS SPELLED RIGHT, EXACTLY AS IT IS WRITTEN IN PRAAT_DATA
+file_name = "2019-08-7.txt"
 
 #Name of the instrument in the video
+#You may enter "My Balafon", "EmileBalafon1", "EmileBalafon2", "StearnsLargeBalafon", "SiamouBalafonDieri", DianBalafon", "JulaBalafon", or "BwabaBalafon"
 instrument = "EmileBalafon2"
 
-#"My Balafon, EmileBalafon1, EmileBalafon2, StearnsLargeBalafon, SiamouBalafonDieri, DianBalafon, JulaBalafon, BwabaBalafon"
-
 #What would you like the outputted Elan TextGrid file to be named? (outputted in textgrid_data file)
-ELAN_name = 'example'
+ELAN_name = "2019-08-7"
 
-#Set to True to get one of the following: 
-
+#Output Settings
+#set one of these to True to get one of the following: 
 #0. Does all of the below
-do_all = False
+do_all = True
 
-#1. An Elan file of individual notes 
-individual_notes = True
-
-#2. An Elan file of notes outputted as one annotation per phrase 
-note_phrases = False
-
-#3 An Elan file of frequencies outputed as one annotation per phrase 
+#1. An Elan file of frequencies outputed as one annotation per phrase (eg '550hz 400hz 550hz 550hz 550hz)
 freq_phrases = False
 
-#4. An elan file of individual relative notes (eg. '5', '4', '5', '5', '5')**
+#2. An Elan file of individual notes (eg. 'F', 'C', 'F', 'F', 'F')
+individual_notes = False
+
+#3. An Elan file of notes outputted as one annotation per phrase (eg. 'F C F F F')
+note_phrases = False
+
+#4. An elan file of individual relative notes (eg. '5', '4', '5', '5', '5' '5a')
 relative_notes = False
 
-#5. An Elan file of relative notes in a phrase (eg.'5 4 5 5 5')** 
+#5. An Elan file of relative notes in a phrase (eg.'5 4 5 5 5 5a')
 relative_phrases = False
 
 #---------------------------------------------------------#
@@ -42,10 +42,12 @@ import do_all as dl
 
 def make_dict(file_name):
   #creates name of file
-  if '.txt' in file_name: 
-    text_file = open('praat_data/' + file_name)
-  else: 
-    text_file = open('praat_data/' + file_name + ".txt")
+  # if '.txt' in file_name: 
+  #   text_file = open('praat_data/' + file_name)
+  # else: 
+  #   text_file = open('praat_data/' + file_name + ".txt")
+
+  text_file = open('praat_data/' + file_name)
 
   #reads info into text_file_lines
   text_file_lines = text_file.readlines()
@@ -182,35 +184,34 @@ def directive():
   # pp.phrase_parser(ftn.freq_to_notes(file_notes, False, instrument)
 
   if do_all: 
-    individ_notes = autoseg.auto_segmenter(ftn.freq_to_notes(file_notes, False, instrument), ELAN_name + '_individual_notes_file') 
+    individ_notes = autoseg.auto_segmenter(ftn.freq_to_notes(file_notes, False, True,instrument), ELAN_name + '_individual_notes_file', do_all) 
 
-    note_phrase = autoseg.auto_segmenter(pp.phrase_parser(ftn.freq_to_notes(file_notes, False, instrument)), ELAN_name + '_note_phrases_file')
+    note_phrase = autoseg.auto_segmenter(pp.phrase_parser(ftn.freq_to_notes(file_notes, False, True, instrument)), ELAN_name + '_note_phrases_file', do_all)
   
-    frequencies = autoseg.auto_segmenter(pp.phrase_parser(file_notes), ELAN_name + '_frequency_file')
+    frequencies = autoseg.auto_segmenter(pp.phrase_parser(file_notes), ELAN_name + '_frequency_file', do_all)
 
-    relative_note = autoseg.auto_segmenter(rn.relative_notes(pp.phrase_parser(ftn.freq_to_notes(file_notes, True, instrument))), ELAN_name + '_relative_notes_file')
+    relative_note = autoseg.auto_segmenter(rn.relative_notes(pp.phrase_parser(ftn.freq_to_notes(file_notes, True, True, instrument))), ELAN_name + '_relative_notes_file', do_all)
 
-    relative_phrase = autoseg.auto_segmenter(rp.relative_phrases(pp.phrase_parser(ftn.freq_to_notes(file_notes, True, instrument))), ELAN_name +'_relative_phrases_file')
+    relative_phrase = autoseg.auto_segmenter(rp.relative_phrases(pp.phrase_parser(ftn.freq_to_notes(file_notes, True, True, instrument))), ELAN_name +'_relative_phrases_file', do_all)
 
     dl.do_all(ELAN_name, individ_notes, note_phrase, frequencies, relative_note, relative_phrase)
 
 
   else: 
     if individual_notes:
-      autoseg.auto_segmenter(ftn.freq_to_notes(file_notes, False, instrument), ELAN_name) 
+      autoseg.auto_segmenter(ftn.freq_to_notes(file_notes, False, True, instrument), ELAN_name, do_all, '_individual_notes') 
 
     elif note_phrases:
-      autoseg.auto_segmenter(pp.phrase_parser(ftn.freq_to_notes(file_notes, False, instrument)), ELAN_name)
+      autoseg.auto_segmenter(pp.phrase_parser(ftn.freq_to_notes(file_notes, False, True, instrument)), ELAN_name, do_all, '_note_phrases')
           
     elif freq_phrases:
-      autoseg.auto_segmenter(pp.phrase_parser(file_notes), ELAN_name)
+      autoseg.auto_segmenter(pp.phrase_parser(file_notes), ELAN_name, do_all, '_frequency_phrases')
 
     elif relative_notes: 
-      autoseg.auto_segmenter(rn.relative_notes(pp.phrase_parser(ftn.freq_to_notes(file_notes, True, instrument))), ELAN_name)
+      autoseg.auto_segmenter(rn.relative_notes(pp.phrase_parser(ftn.freq_to_notes(file_notes, True, True, instrument))), ELAN_name, do_all, '_relative_notes')
 
     elif relative_phrases: 
-      autoseg.auto_segmenter(rp.relative_phrases(pp.phrase_parser(ftn.freq_to_notes(file_notes, True, instrument))), ELAN_name)
-
+      autoseg.auto_segmenter(rp.relative_phrases(pp.phrase_parser(ftn.freq_to_notes(file_notes, True, True, instrument))), ELAN_name, do_all, '_relative_phrases')
 
 #runs it all
 directive()

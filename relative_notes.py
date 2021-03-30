@@ -41,12 +41,17 @@ def relative_notes(file_info):
           # phrase_length += note[1]
 
       for note in phrase: 
+        #gets the note relative to others 
         if not '.' in note[2] and not 'undefined' in note[2]: 
+          #the note is 5 minus (the highest note of the phrase minus the row number of the note)
           new_note = [note[0], note[1], str(5 - (high_note-int(note[2])))]
 
+          #if this new note is 0, then it equals the high note and should be 5, if it less than 0, it is an octave below, and should have 5 added to it. 
           if int(new_note[2]) <= 0 : 
             new_note = str(int(new_note[2]) + 5) + 'a'
-            # phrase_list.append(new_note)
+            if new_note == '0a': 
+              new_note = '5aa'
+            phrase_list.append(new_note)
             new_note = [note[0], note[1], new_note]
             phrase_list.append(new_note)
             

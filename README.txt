@@ -14,11 +14,10 @@ Instructions:
 4. Go to main.py and follow the prompts
 5. After filling in the prompts (file name, name of the instrument, final TextGrid file name, true/false settings), hit Run.
 
-To save the data as a .TextGrid file:
-6. In the repl, click the "Add file" icon in the top left to create a .TextGrid file.
-  6a. Copy-paste the output data from #5 into this new file.
-  6b. Click the three dots in the top left of the repl -> "Download as zip"
-  6c. Extract the files to your computer, namely the new .TextGrid file.
+To export the .TextGrid file:
+6. In the repl, click the three dots in the top left of the repl -> "Download as zip"
+  6a. Extract the files to your computer, namely the new .TextGrid file.
+  6b. OPTIONALLY you may choose to copy-paste the output into a notepad app on your computer, then save that as a .TextGrid file. 
 You now have the final .TextGrid file.
 
 To upload the .TextGrid file into ELAN:

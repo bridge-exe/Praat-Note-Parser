@@ -11,12 +11,13 @@ from os.path import join
 
 #create a for loop for the objs in file info, and add those tuples to list, use list to make a textGrid interval tier, use tier to make textgrid file 
 
-def auto_segmenter(file_info, ELAN_name):
-  # for x in file_info:
-  #   print(x)
+def auto_segmenter(file_info, ELAN_name, do_all, operation = ''):
+
   beat_info = []
   rest_info = []
   file_length = 0 
+
+  ELAN_name = ELAN_name + operation
 
   if len(file_info) == 2: 
     file_info = file_info[0]
@@ -53,35 +54,32 @@ def auto_segmenter(file_info, ELAN_name):
   beat_tier = tgio.IntervalTier('Balafon', beat_info)
 
   #nothing is left blank  
-  nothing = [[0, 1, '']]  
+  # nothing = [[0, 1, '']]  
   #creates tiers 
-  karim_tier = tgio.IntervalTier('Karim', nothing)
-  ktrans_tier = tgio.IntervalTier('Karim Translation', nothing) 
-  ant_tier = tgio.IntervalTier('Anthony', nothing)
-  atrans_tier = tgio.IntervalTier('Anthony Translation', nothing)
-  emile_tier = tgio.IntervalTier('Emile', nothing)
-  etrans_tier = tgio.IntervalTier('Emile Translation', nothing)
+  # karim_tier = tgio.IntervalTier('Karim', nothing)
+  # ktrans_tier = tgio.IntervalTier('Karim Translation', nothing) 
+  # ant_tier = tgio.IntervalTier('Anthony', nothing)
+  # atrans_tier = tgio.IntervalTier('Anthony Translation', nothing)
+  # emile_tier = tgio.IntervalTier('Emile', nothing)
+  # etrans_tier = tgio.IntervalTier('Emile Translation', nothing)
 
 #creates the textgrid and adds in the filled beat tier, and blank tiers for further annotation
   file_textgrid = tgio.Textgrid()
   
   file_textgrid.addTier(beat_tier)
-  file_textgrid.addTier(karim_tier)
-  file_textgrid.addTier(ktrans_tier)
-  file_textgrid.addTier(ant_tier)
-  file_textgrid.addTier(atrans_tier)
-  file_textgrid.addTier(emile_tier)
-  file_textgrid.addTier(etrans_tier)
+  # file_textgrid.addTier(karim_tier)
+  # file_textgrid.addTier(ktrans_tier)
+  # file_textgrid.addTier(ant_tier)
+  # file_textgrid.addTier(atrans_tier)
+  # file_textgrid.addTier(emile_tier)
+  # file_textgrid.addTier(etrans_tier)
 
   
 
 #makes textgrid of beats of given file_info
+  if do_all == False : 
+    file_textgrid.save('textgrid_data/' + ELAN_name + '.TextGrid')  
 
-  file_textgrid.save('textgrid_data/' + ELAN_name + '.TextGrid')  
-
-  # file_textgrid.save('C:\Users\Bridg\Praat Proj' + ELAN_name + '.TextGrid')
-  
-  #figure out saving to computer  
   return beat_info
 
   

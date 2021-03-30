@@ -5,8 +5,7 @@
 # it as more than one note?
 import csv
 
-def freq_to_notes(file_info, relative, undefined_included, instrument = 'JulaBalafon'): 
- 
+def freq_to_notes(file_info, relative, undefined_included, instrument): 
   open_file = open("praat_data/balafon_Frequencies.csv")
   notes = csv.reader(open_file, delimiter=',')
   balafon_notes = []
@@ -15,7 +14,7 @@ def freq_to_notes(file_info, relative, undefined_included, instrument = 'JulaBal
     balafon_notes.append(x)
   count = 0 
   notes_and_lengths = {}
-  variance = 9
+  variance = 12
   
   instrument_col = balafon_notes[0].index(instrument)
   notes_and_lengths_info = []
@@ -45,23 +44,31 @@ def freq_to_notes(file_info, relative, undefined_included, instrument = 'JulaBal
       note_freq = round(freq)
       note_range = range(round(note_freq) - variance, round(note_freq) + variance)
       note_found = False
+    
 
       for row in balafon_notes: 
+        
         #simple catch for first val, which will be a string with the name of the instrument
         if instrument in row[instrument_col]:
+         
           continue
-
+          
         #catches empty values, in case of shorter balafon
         elif row[instrument_col] == '': 
+          
           continue
-
+          
         #checks column for match of the_note +-variance 
         elif int(row[instrument_col]) in note_range: 
+         
           if relative: 
+            
             the_note = row[0]
+            
 
           else: 
             the_note = row[instrument_col + 1]
+            
           
           notes_and_lengths['beat ' + str(count)] = str(the_note) + ' for ' + length + 'ms' + ' at ' + start + 's'
           note_found = True
@@ -72,9 +79,18 @@ def freq_to_notes(file_info, relative, undefined_included, instrument = 'JulaBal
         notes_and_lengths['beat ' + str(count)] = str(freq) + 'hz for ' + length + 'ms' + ' at ' + start + 's'
         notes_and_lengths_info.append([start, length, str(freq)])
 
+    
 
-  # for x in notes_and_lengths_info: 
-  #   print(x)
+  #cleans up chatter of balafon
+ 
+  # notes_and_lengths_info = [x for x in notes_and_lengths_info if int(x) <=20 and x[2] != 'undefined']
+  for x in notes_and_lengths_info: 
+    if int(x[1]) <= 20 and x[2] != 'undefined':
+      notes_and_lengths_info.remove(notes_and_lengths_info[notes_and_lengths_info.index(x)])
+  for x in notes_and_lengths_info: 
+    if int(x[1]) <= 20 and x[2] != 'undefined':
+      notes_and_lengths_info.remove(notes_and_lengths_info[notes_and_lengths_info.index(x)])
+     
   return notes_and_lengths_info
 
 # spits out a list of lists, where each list is [timestamp, length in ms, and note (or freq)]

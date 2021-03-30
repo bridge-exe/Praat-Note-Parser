@@ -6,7 +6,7 @@ def do_all(ELAN_name, individual_notes, note_phrases, frequencies, relative_note
   #creates tiers of import
   individual_notes_tier = tgio.IntervalTier('Individual Notes', individual_notes)
   note_phrases_tier = tgio.IntervalTier('Note Phrases', note_phrases)
-  frequencies_tier = tgio.IntervalTier('Frequencies',frequencies)
+  frequencies_tier = tgio.IntervalTier('Frequencies', frequencies)
   relative_notes_tier = tgio.IntervalTier('Relative Notes', relative_notes)
   relative_phrases_tier = tgio.IntervalTier('Relative Phrases', relative_phrases)
 

@@ -50,6 +50,8 @@ def relative_phrases(file_info):
           
           if int(new_note) <= 0 : 
             new_note = str(int(new_note) + 5) + 'a'
+            if new_note == '0a': 
+              new_note = '5aa'
 
           phrase_list.append(new_note)
 
