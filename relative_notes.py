@@ -48,10 +48,13 @@ def relative_notes(file_info):
 
           #if this new note is 0, then it equals the high note and should be 5, if it less than 0, it is an octave below, and should have 5 added to it. 
           if int(new_note[2]) <= 0 : 
-            new_note = str(int(new_note[2]) + 5) + 'a'
+            new_note = str(int(new_note[2]) + 5) + 'a' 
+
             if new_note == '0a': 
               new_note = '5aa'
+     
             phrase_list.append(new_note)
+            
             new_note = [note[0], note[1], new_note]
             phrase_list.append(new_note)
             

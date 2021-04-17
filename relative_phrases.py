@@ -46,15 +46,17 @@ def relative_phrases(file_info):
 
       for note in phrase: 
         if not '.' in note[2] and not 'undefined' in note[2]: 
-          new_note = str(5 - (high_note-int(note[2])))
+          new_note = 5 - (high_note-int(note[2]))
           
-          if int(new_note) <= 0 : 
-            new_note = str(int(new_note) + 5) + 'a'
-            if new_note == '0a': 
-              new_note = '5aa'
+          if new_note <= 0 : 
+            new_note = str(new_note + 5)
+            phrase_list.append(new_note + 'a')
 
-          phrase_list.append(new_note)
-
+            if int(new_note[:2]) <= 0: 
+              new_note = str(int(new_note[:2]) + 5)
+              phrase_list.append(new_note + 'aa')
+          else: 
+            phrase_list.append(str(new_note))            
         else: 
           phrase_list.append(note[2])
 

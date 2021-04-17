@@ -1,13 +1,13 @@
 #Name of the file you'd like to read in praat_data folder
   #MAKE SURE IT IS SPELLED RIGHT, EXACTLY AS IT IS WRITTEN IN PRAAT_DATA
-file_name = "2019-08-7.txt"
+file_name = "2019-8-15"
 
 #Name of the instrument in the video
 #You may enter "My Balafon", "EmileBalafon1", "EmileBalafon2", "StearnsLargeBalafon", "SiamouBalafonDieri", DianBalafon", "JulaBalafon", or "BwabaBalafon"
 instrument = "EmileBalafon2"
 
 #What would you like the outputted Elan TextGrid file to be named? (outputted in textgrid_data file)
-ELAN_name = "2019-08-7"
+ELAN_name = "ZOOM0005 2019-8-15b"
 
 #Output Settings
 #set one of these to True to get one of the following: 
@@ -27,7 +27,7 @@ note_phrases = False
 relative_notes = False
 
 #5. An Elan file of relative notes in a phrase (eg.'5 4 5 5 5 5a')
-relative_phrases = False
+relative_phrases = True
 
 #---------------------------------------------------------#
 import freq_to_notes as ftn
@@ -36,6 +36,7 @@ import relative_notes as rn
 import phrase_parser as pp 
 import relative_phrases as rp
 import do_all as dl 
+import remove_undefined as ru
 #using text file from Praat, gets file name, makes a dict with time:freq lines as a list, then removes header, creates empty dictionary
 
 #do_all, individual_notes, note_phrases, freq_phrases, relative_notes, relative_phrases
@@ -53,6 +54,10 @@ def make_dict(file_name):
   text_file_lines = text_file.readlines()
   text_file_lines.remove(text_file_lines[0])
   text_file_lines.append('0.0000   --undefined--')
+  text_file_lines = ru.replace_undefined(text_file_lines)
+
+
+##### replace undefined
 
   #creates dictionary of times and hz
   text_file_dictionary = {}
